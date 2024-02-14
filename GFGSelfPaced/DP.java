@@ -236,19 +236,18 @@ public class DP {
                 int len = dp[ind + 1][prev_ind + 1];//Not Take
 
                 //Checking the previous element in the array
-                if (prev_ind == -1 || arr[ind] > arr[prev_ind]) {
+                if (prev_ind == -1 || arr[ind] > arr[prev_ind])
                     len = Math.max(len, 1 + dp[ind + 1][ind + 1]);//Take, ind+1 is to make avoid -1 indexing
-                }
                 dp[ind][prev_ind + 1] = len;
             }
         }
-        return dp[0][0];
+        return dp[0][-1 + 1];
 
     }
 
     private static int LIS2(int ind, int prev_ind, int[] arr, int n, int[][] dp) {
         /*
-        So inorder to store -1,we have to perform coordinate change in the array.
+        So inorder to store -1,we have to perform cordinate change in the array.
         that's why we add onto it.
         dp[ind][prev+1]
          */
@@ -534,9 +533,9 @@ public class DP {
         int profit = 0;
         int n = prices.size();
         for (int i = 1; i < n; i++) {
-            int cost = prices.get(i) - mini; // get the cost
-            profit = Math.max(profit, cost); // get the profit
-            mini = Math.min(mini, prices.get(i)); // get the min cost element
+            int cost = prices.get(i) - mini;
+            profit = Math.max(profit, cost);
+            mini = Math.min(mini, prices.get(i));
         }
         return profit;
     }
@@ -811,7 +810,6 @@ public class DP {
                     cur[j] = 1 + prev[j - 1];
                 else
                     cur[j] = Math.max(prev[j], cur[j - 1]);
-                
             }
             prev = cur;
         }
@@ -826,13 +824,12 @@ public class DP {
          */
         int n = s.length(), m = t.length();
         int[][] dp = new int[n + 1][m + 1];
-//        No need, by default java initialize with 0.
-//        for (int i = 0; i <= n; i++) {
-//            dp[i][0] = 0;
-//        }
-//        for (int i = 0; i <= m; i++) {
-//            dp[0][i] = 0;
-//        }
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = 0;
+        }
+        for (int i = 0; i <= m; i++) {
+            dp[0][i] = 0;
+        }
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= m; j++) {
                 if (s.charAt(i - 1) == t.charAt(j - 1))
@@ -860,7 +857,7 @@ public class DP {
     private static int LCS(int i, int j, String s, String t) {
         if (i < 0 || j < 0) return 0;
         if (s.charAt(i - 1) == t.charAt(j - 1))
-               return 1 + LCS(i - 1, j - 1, s, t);
+            return 1 + LCS(i - 1, j - 1, s, t);
         return Math.max(LCS(i - 1, j, s, t), LCS(i, j - 1, s, t));
     }
 
@@ -1208,7 +1205,7 @@ public class DP {
         /*
         w - is the capacity of the knapsack/Bag.
         wt - is the weight array of item's weight
-        val - is correspond values of an item
+        val - is the correspond values of an item
          */
 
         //Base case
@@ -1470,7 +1467,7 @@ public class DP {
         SC -> O(N)
          */
         int m = arr[0].length;
-        if (j < 0 || j >= m)  //outside the boundary
+        if (j < 0 || j >= m)  //out side the boundary
             return Integer.MIN_VALUE;
         if (i == 0)           // if its only single value
             return arr[0][j];
@@ -1748,7 +1745,7 @@ public class DP {
         ** Tabulation **
     Finding max sum in all the subsequences in the array
     Constraints: You cant pick adjacent element i,i+1,i+2....etc
-    TC -> O(n)
+    TC -> O(2^n)
     SC -> O(N)
      */
         int n = arr.length;
@@ -1770,7 +1767,7 @@ public class DP {
                   ** Tabulation **
     Finding max sum in all the subsequences in the array
     Constraints: You can't pick adjacent element i,i+1,i+2....etc
-    TC -> O(n)
+    TC -> O(2^n)
     SC -> O(N)
      */
         int[] dp = new int[ind];
@@ -1811,7 +1808,7 @@ public class DP {
     Constraints: You cannot pick adjacent element i,i+1,i+2....etc
     TC -> O(2^n)
     SC -> O(N)
-    */
+     */
         //Base cases
         if (ind == 0) return arr[ind];
         if (ind < 0) return 0;
@@ -1827,7 +1824,7 @@ public class DP {
     Using memoization bottom to up
     TC -> O(N);
     SC -> O(N);
-    */
+     */
         int[] dp = new int[n];
         dp[0] = 0;
         for (int i = 1; i < n; i++) {
@@ -2349,7 +2346,6 @@ public class DP {
     }
 
     public static int LIS(int[] arr) {
-        
         int n = arr.length;
         int[] lis = new int[n];
         lis[0] = 1;

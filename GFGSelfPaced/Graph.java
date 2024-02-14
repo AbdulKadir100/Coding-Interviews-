@@ -3,15 +3,6 @@ package GFGSelfPaced;
 import java.util.*;
 
 public class Graph {
-    class Pair5{
-        int first;
-        int second;
-
-        public Pair5(int f,int s){
-            first=f;
-            second=s;
-        }
-    }
     class Pair {
         int row;
         int col;
@@ -24,7 +15,7 @@ public class Graph {
         }
     }
 
-    class Pair2{
+    class Pair2 {
         int first;
         int second;
 
@@ -34,29 +25,15 @@ public class Graph {
         }
 
     }
-
-    class Pair3 {
+    class Pair3{
         int first;
         int second;
         int third;
-
-        Pair3(int _first, int _second, int _third) {
+        Pair3(int _first,int _second,int _third){
             this.first = _first;
             this.second = _second;
             this.third = _third;
         }
-    }
-
-    class Pair4 {
-        //This is for word ladder
-        String first;
-        int second;
-
-        Pair4(String _first, int _second) {
-            this.first = _first;
-            this.second = _second;
-        }
-
     }
 
     public static void main(String[] args) {
@@ -77,218 +54,98 @@ public class Graph {
 
 
     }
-    private List<Integer> shortestPath(int n,int m,int[][] edge){
-        ArrayList<ArrayList<Pair2>> adj = new ArrayList<>();
-        for(int i=0;i<=n;i++){
-            adj.add(new ArrayList<>());
-        }
-        for(int i=0;i<m;i++){
-            adj.get(edge[i][0]).add(new Pair2(edge[i][1], edge[i][2]));
-            adj.get(edge[i][1]).add(new Pair2(edge[i][0],edge[i][2]));
-        }
-
-        //Min Heap
-        PriorityQueue<Pair2> pq = new PriorityQueue<Pair2>();
-        int[] dist = new int[n+1];
-        int[] parent = new int[n+1];
-
-        for(int i=1;i<=n;i++){
-            dist[i] = (int)(1e9);
-            parent[i] = i;
-        }
-
-        dist[1] = 0;
-        pq.add(new Pair2(0,1));
-
-        while (pq.size()!=0) {
-            Pair2 it = pq.peek();
-            int node = it.second;
-            int dis = it.first;
-            pq.remove();
-
-            for (Pair2 iter : adj.get(node)) {
-                int adjNode = iter.first;
-                int edW = iter.second;
-                if (dis + edW < dist[adjNode]) {
-                    dist[adjNode] = dis + edW;
-                    pq.add(new Pair2(dis + edW, adjNode));
-                    parent[adjNode] = node;
-                }
-            }
-        }
-            //Get the path in list and reverse it return
-            List<Integer> path = new ArrayList<>();
-            int nod = n;
-            while (parent[nod]!=nod){
-                path.add(nod);
-                nod = parent[nod];
-            }
-            path.add(1);
-            Collections.reverse(path);
-            return path;
-
-    }
-
-    private int[] dijkstraPQueue(int V, ArrayList<ArrayList<ArrayList<Integer>>> adj, int S) {
-        // Shortest distance using dijkstra algorithm using Priority Queue
-        // Dijkstra algo not work for negative value
-        // TC -> E logV (E=total edges,V no of nodes)
-
-        // Min heap
-        PriorityQueue<Pair2> pq = new PriorityQueue<Pair2>();
-
-        int[] dist = new int[V];
-        for (int i = 0; i < V; i++) {
-            dist[i] = (int) 1e9;
-        }
-        dist[0] = S;
-        pq.add(new Pair2(0, S));
-
-        while (pq.size() != 0) {
-            int dis = pq.peek().first;
-            int node = pq.peek().second;
-            pq.remove();
-            for (int i = 0; i < adj.get(node).size(); i++) {
-                int Naya_edgeWeight = adj.get(node).get(i).get(1);
-                int Naya_adjNode = adj.get(node).get(i).get(0);
-
-                if (dis + Naya_edgeWeight < dist[Naya_adjNode]) {
-                    dist[Naya_adjNode] = dis + Naya_edgeWeight;
-                    pq.add(new Pair2(dist[Naya_adjNode], Naya_adjNode));
-                }
-            }
-        }
-        return dist;
-    }
-
-    private int wordLadderLength(String startWord, String targetWord, String[] wordList) {
-        Queue<Pair4> q = new LinkedList<>();
-        q.add(new Pair4(startWord, 1));
-        Set<String> set = new HashSet<>();
-        int len = wordList.length;
-        for (int i = 0; i < len; i++) {
-            set.add(wordList[i]);
-        }
-        //visited
-        set.remove(startWord);
-        while (!q.isEmpty()) {
-            String word = q.peek().first;
-            int steps = q.peek().second;
-            q.remove();
-            if (word.equals(targetWord)) return steps;
-            //word = hat
-            for (int i = 0; i < word.length(); i++) {
-                //this loop will execute a to z (26 times) for each char in word
-                for (char ch = 'a'; ch <= 'z'; ch++) {
-                    // change every char in word
-                    char[] replacedCharArray = word.toCharArray();
-                    replacedCharArray[i] = ch;
-                    String replcedWord = new String(replacedCharArray);
-                    // it exist in the set
-                    if (set.contains(replcedWord)) {
-                        set.remove(replcedWord);
-                        q.add(new Pair4(replcedWord, steps + 1));
-                    }
-                }
-            }
-        }
-        return 0;
-    }
-
-    private int[] shortestPath(int[][] edges, int n, int m, int src) {
+    private int[] shortestPath(int[][] edges,int n,int m,int src){
         ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
+        for(int i=0;i<n;i++){
             adj.add(new ArrayList<>());
         }
         //Its undirected graph so it has both vertices edges
-        for (int i = 0; i < m; i++) {
+        for(int i=0;i<m;i++){
             adj.get(edges[i][0]).add(edges[i][1]);
             adj.get(edges[i][1]).add(edges[i][0]);
         }
 
         int[] dist = new int[n];
-        for (int i = 0; i < n; i++) {
-            dist[i] = (int) 1e9;
+        for(int i=0;i<n;i++){
+            dist[i] = (int)1e9;
         }
 
-        dist[src] = 0;
+        dist[src]=0;
         Queue<Integer> q = new LinkedList<>();
         q.add(src);
-        while (!q.isEmpty()) {
-            int node = q.peek();
+        while (!q.isEmpty()){
+            int node= q.peek();
             q.remove();
-            for (int it : adj.get(node)) {
-                if (dist[node] + 1 < dist[it]) {
-                    dist[it] = 1 + dist[node];
+            for(int it: adj.get(node)){
+                if(dist[node]+1<dist[it]){
+                    dist[it] = 1+dist[node];
                     q.add(it);
                 }
             }
         }
-        for (int i = 0; i < n; i++) {
-            if (dist[i] == (int) 1e9) {
+        for(int i=0;i<n;i++){
+            if(dist[i]==(int)1e9){
                 dist[i] = -1;
             }
         }
         return dist;
     }
-
-    private void topoSort4ShortestPath(int node, ArrayList<ArrayList<Pair2>> adj,
-                                       int[] vis, Stack<Integer> st) {
+    private void topoSort4ShortestPath(int node,ArrayList<ArrayList<Pair2>> adj,
+                                        int[] vis,Stack<Integer> st){
         //Shortest path in the undirected graph
         //Traversal used DFS
 
-        vis[node] = 1;
-        for (int i = 0; i < adj.get(node).size(); i++) {
+        vis[node]=1;
+        for(int i=0;i<adj.get(node).size();i++){
             int v = adj.get(node).get(i).first;
-            if (vis[v] == 0) {
-                topoSort4ShortestPath(i, adj, vis, st);
+            if(vis[v]==0){
+                topoSort4ShortestPath(i,adj,vis,st);
             }
         }
         st.add(node);
 
     }
-
-    private int[] shortestPath1(int N, int M, int[][] edges) {
+    private int[] shortestPath(int N,int M,int[][] edges){
         ArrayList<ArrayList<Pair2>> adj = new ArrayList<>();
         // Building graph
-        for (int i = 0; i < N; i++) {
+        for(int i=0;i<N;i++){
             ArrayList<Pair2> temp = new ArrayList<>();
             adj.add(temp);
         }
 
         // Adding graph component to adj list
-        for (int i = 0; i < M; i++) {
+        for(int i=0;i<M;i++){
             int u = edges[i][0]; // Get the source edge
             int v = edges[i][1]; // Get the vertex
             int wt = edges[i][2]; // Get the weight associated with it
-            adj.get(u).add(new Pair2(v, wt));
+            adj.get(u).add(new Pair2(v,wt));
         }
         int[] vis = new int[N];
         Stack<Integer> st = new Stack<>();
 
-        for (int i = 0; i < N; i++) {
-            if (vis[i] == 0) {
-                topoSort4ShortestPath(i, adj, vis, st);
+        for(int i=0;i<N;i++){
+            if(vis[i]==0){
+                topoSort4ShortestPath(i,adj,vis,st);
             }
         }
         int[] dist = new int[N];
         // Fill the dist array by Infinite( 1e9 )
-        for (int i = 0; i < N; i++) {
-            dist[i] = (int) 1e9;
+        for(int i=0;i<N;i++){
+            dist[i] = (int)1e9;
         }
 
-        dist[0] = 0;
-        while (!st.isEmpty()) {
+        dist[0]=0;
+        while (!st.isEmpty()){
             int node = st.peek();
             st.pop();
 
-            for (int i = 0; i < adj.get(node).size(); i++) {
+            for(int i=0;i<adj.get(node).size();i++){
                 int v = adj.get(node).get(i).first;  // Get the vertex
                 int wt = adj.get(node).get(i).second; // Vertex weight
 
                 // Updating with new smaller distance
-                if (dist[node] + wt < dist[v]) {
-                    dist[v] = wt + dist[node];
+                if(dist[node]+ wt < dist[v]){
+                    dist[v] = wt+dist[node];
                 }
             }
 
@@ -296,241 +153,235 @@ public class Graph {
         return dist;
 
     }
-
-    private String findOrder(String[] dict, int N, int K) {
+    private String findOrder(String [] dict, int N, int K)
+    {
         // Alien dictionary order using topological sort
         // If there is S1 is greater then S2 and everything matching and
         // hav cyclic dependencies then a<b<a
         // then only sorted order not possible
         ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
 
-        for (int i = 0; i < K; i++) {
+        for(int i=0;i<K;i++){
             adj.add(new ArrayList<>());
         }
 
-        for (int i = 0; i < N - 1; i++) {
+        for(int i=0;i<N-1;i++){
             String s1 = dict[i];
-            String s2 = dict[i + 1];
-            int len = Math.min(s1.length(), s2.length());
-            for (int ptr = 0; ptr < len; ptr++) {
-                if (s1.charAt(ptr) != s2.charAt(ptr)) {
-                    adj.get(s1.charAt(ptr) - 'a').add(s2.charAt(ptr) - 'a');
+            String s2 = dict[i+1];
+            int len = Math.min(s1.length(),s2.length());
+            for(int ptr=0;ptr<len;ptr++){
+                if(s1.charAt(ptr)!=s2.charAt(ptr)){
+                    adj.get(s1.charAt(ptr)-'a').add(s2.charAt(ptr)-'a');
                     break;
                 }
             }
         }
-        int[] topo = kahanTopoSort(K, adj);
-        String ans = "";
-        for (int it : topo) {
-            ans = ans + (char) (it + (int) ('a'));
+        int[] topo = kahanTopoSort(K,adj);
+        String ans="";
+        for(int it:topo){
+            ans = ans + (char)(it+(int)('a'));
         }
         return ans;
 
     }
-
     private int[] courseScheduler2(int V, int[][] prerequisites) {
         ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
 
-        for (int i = 0; i < V; i++) {
+        for(int i=0;i<V;i++ ){
             adj.add(new ArrayList<>());
         }
         //Filling graph by given prereq
 
         int V2 = prerequisites.length;
 
-        for (int[] req : prerequisites) {
+        for(int[] req: prerequisites){
             adj.get(req[1]).add(req[0]);
         }
         int[] indegree = new int[V];
 
         //Count indegree of every vertex
-        for (int i = 0; i < V; i++) {
-            for (int it : adj.get(i)) {
+        for(int i=0;i<V;i++){
+            for(int it : adj.get(i)){
                 indegree[it]++;
             }
         }
 
         Queue<Integer> q = new LinkedList<>();
-        for (int i = 0; i < V; i++) {
-            if (indegree[i] == 0) {
+        for(int i=0;i<V;i++){
+            if(indegree[i]==0){
                 q.add(i);
             }
         }
-        int[] topo = new int[V];
-        int i = 0;
-        while (!q.isEmpty()) {
+        int[] topo= new int[V];
+        int i=0;
+        while (!q.isEmpty()){
             int node = q.peek();
             q.remove();
-            topo[i++] = node;
+            topo[i++]=node;
             //node in your topo sort
             // Just remove it from indegree
 
-            for (int it : adj.get(node)) {
+            for(int it : adj.get(node)){
                 indegree[it]--;
-                if ((indegree[it]) == 0) {
+                if((indegree[it])==0){
                     q.add(it);
                 }
             }
         }
-        if (topo.length == V) return topo;
+        if(topo.length==V) return topo;
         int[] arr = {};
         return arr;
     }
-
     private boolean courseScheduler(int V, int[][] prerequisites) {
         ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
 
-        for (int i = 0; i < V; i++) {
+        for(int i=0;i<V;i++){
             adj.add(new ArrayList<>());
         }
         //Filling graph by given prereq
 
-        for (int[] e : prerequisites) {
+        for(int[] e: prerequisites){
             adj.get(e[1]).add(e[0]);
         }
 
         int[] indegree = new int[V];
 
-        for (int i = 0; i < V; i++) {
-            for (int it : adj.get(i)) {
+        for(int i=0;i<V;i++){
+            for(int it : adj.get(i)){
                 indegree[it]++;
             }
         }
 
         Queue<Integer> q = new LinkedList<>();
-        for (int i = 0; i < V; i++) {
-            if (indegree[i] == 0) {
+        for(int i=0;i<V;i++){
+            if(indegree[i]==0){
                 q.add(i);
             }
         }
-        int[] topo = new int[V];
-        int count = 0;
-        while (!q.isEmpty()) {
+        int[] topo= new int[V];
+        int count=0;
+        while (!q.isEmpty()){
             int node = q.peek();
             q.remove();
             count++;
             //node in your topo sort
             // Just remove it from indegree
 
-            for (int it : adj.get(node)) {
+            for(int it : adj.get(node)){
                 indegree[it]--;
-                if ((indegree[it]) == 0) {
+                if((indegree[it])==0){
                     q.add(it);
                 }
             }
         }
-        return count == V;
+        return count==V;
 
     }
-
     private boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
         // Detect cycle in a directed graph
         // If topo[] length is equal to total vertices V
         // then there is a cycle in Graph
         int[] indegree = new int[V];
 
-        for (int i = 0; i < V; i++) {
-            for (int it : adj.get(i)) {
+        for(int i=0;i<V;i++){
+            for(int it : adj.get(i)){
                 indegree[it]++;
             }
         }
 
         Queue<Integer> q = new LinkedList<>();
-        for (int i = 0; i < V; i++) {
-            if (indegree[i] == 0) {
+        for(int i=0;i<V;i++){
+            if(indegree[i]==0){
                 q.add(i);
             }
         }
-        int count = 0;
-        int i = 0;
-        while (!q.isEmpty()) {
+        int count=0;
+        int i=0;
+        while (!q.isEmpty()){
             int node = q.peek();
             q.remove();
             count++;
             //node in your topo sort
             // Just remove it from indegree
 
-            for (int it : adj.get(node)) {
+            for(int it : adj.get(node)){
                 indegree[it]--;
-                if (indegree[it] == 0) {
+                if(indegree[it]==0){
                     q.add(it);
                 }
             }
         }
-        if (count == V) return false;
+        if(count==V)return false;
         return true;
     }
-
-    private int[] kahanTopoSort(int V, ArrayList<ArrayList<Integer>> adj) {
+    private int[] kahanTopoSort(int V,ArrayList<ArrayList<Integer>> adj){
         int[] indegree = new int[V];
 
         //Counting Indegree
-        for (int i = 0; i < V; i++) {
-            for (int it : adj.get(i)) {
+        for(int i=0;i<V;i++){
+            for(int it : adj.get(i)){
                 indegree[it]++;
             }
         }
 
         Queue<Integer> q = new LinkedList<>();
         // Adding edges to the queue of having in-degree 0.
-        for (int i = 0; i < V; i++) {
-            if (indegree[i] == 0) {
+        for(int i=0;i<V;i++){
+            if(indegree[i]==0){
                 q.add(i);
             }
         }
-        int[] topo = new int[V];
-        int i = 0;
-        while (!q.isEmpty()) {
+        int[] topo= new int[V];
+        int i=0;
+        while (!q.isEmpty()){
             int node = q.peek();
             q.remove();
             topo[i++] = node;
             //node in your topo sort
             // Just remove it from indegree
 
-            for (int it : adj.get(node)) {
+            for(int it : adj.get(node)){
                 indegree[it]--;
-                if ((indegree[it]) == 0) {
+                if((indegree[it])==0){
                     q.add(it);
                 }
             }
         }
         return topo;
     }
-
-    private static void dfsForTopoSort(int node, int[] vis, Stack<Integer> st, ArrayList<ArrayList<Integer>> adj) {
+    private static void dfsForTopoSort(int node,int[] vis,Stack<Integer> st,ArrayList<ArrayList<Integer>> adj){
         vis[node] = 1;
 
-        for (int it : adj.get(node)) {
-            if (vis[it] == 0) {
-                dfsForTopoSort(it, vis, st, adj);
+        for(int it:adj.get(node)){
+            if(vis[it]==0){
+                dfsForTopoSort(it,vis,st,adj);
             }
         }
         st.push(node);
     }
-
     //Function to return list containing vertices in Topological order.
-    private static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) {
+    private static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj)
+    {
         Stack<Integer> st = new Stack<>();
         int[] vis = new int[V];
 
-        for (int i = 0; i < V; i++) {
-            if (vis[i] == 0) {
-                dfsForTopoSort(i, vis, st, adj);
+        for(int i =0;i<V;i++){
+            if(vis[i]==0){
+                dfsForTopoSort(i,vis,st,adj);
             }
         }
         int[] arr = new int[V];
-        int i = 0;
-        while (!st.isEmpty()) {
+        int i=0;
+        while(!st.isEmpty()){
             arr[i++] = st.peek();
             st.pop();
         }
         return arr;
     }
-
-    private boolean dfsforCycleDetecDirect(int node, int[] vis, int[] pathVis,
-                                           ArrayList<ArrayList<Integer>> adj) {
+    private boolean dfsforCycleDetecDirect(int node,int[] vis,int[] pathVis,
+                                           ArrayList<ArrayList<Integer>> adj){
         /*
-        Whenever pathVis[] cell is become 0 then it has no cycle
+        Whenever pathVis[] cell is became 0 then it has no cycle
         TC -> O(V+2E)
         SC -> O(N)
         */
@@ -538,64 +389,62 @@ public class Graph {
         pathVis[node] = 1;
 
         //Traverse adjacent node
-        for (int i : adj.get(node)) {
-            if (vis[i] == 0) {
-                if (!dfsforCycleDetecDirect(i, vis, pathVis, adj)) {
+        for(int i : adj.get(node)){
+            if(vis[i]  == 0 ){
+                if(!dfsforCycleDetecDirect(i,vis,pathVis,adj)){
                     return true;
-                } else if (pathVis[i] == 1)
+                }else if(pathVis[i]==1)
                     return true;
             }
         }
         pathVis[node] = 0;
         return false;
     }
-
-    private boolean isCyclicDirected(int V, ArrayList<ArrayList<Integer>> adj) {
+    private boolean isCyclicDirected(int V,ArrayList<ArrayList<Integer>> adj){
 
         int[] vis = new int[V];
         int[] pathvis = new int[V];
 
-        for (int i = 0; i < V; i++) {
-            if (dfsforCycleDetecDirect(i, vis, pathvis, adj))
-                return true;
-        }
-        return false;
+        for(int i=0;i<V;i++){
+              if(dfsforCycleDetecDirect(i,vis,pathvis,adj))
+                  return true;
+          }
+          return false;
     }
 
-    private boolean dfs(int node, int col, int[] color, ArrayList<ArrayList<Integer>> adj) {
+    private boolean dfs(int node,int col,int[] color,ArrayList<ArrayList<Integer>> adj){
         color[node] = col;
 
-        for (int i : adj.get(node)) {
-            if (color[i] == -1) {
-                if (!dfs(i, 1 - col, color, adj)) {
+        for(int i : adj.get(node)){
+            if(color[i]==-1){
+                if(!dfs(i,1-col,color,adj)){
                     return false;
                 }
-            } else if (color[i] == col) {
+            }else if(color[i] == col){
                 return false;
             }
         }
         return true;
     }
-
-    private boolean bfs(int start, int V, int[][] graph, int[] color) {
+    private boolean bfs(int start,int V,int[][] graph,int[] color){
         Queue<Integer> q = new LinkedList<>();
         q.add(start);
         color[start] = 0;
 
-        while (!q.isEmpty()) {
+        while(!q.isEmpty()){
             int curnode = q.peek();
             q.remove();
 
-            for (int it : graph[curnode]) {
+            for(int it : graph[curnode]){
                 //If not colored yet
                 //Colored with opposite color
-                if (color[it] == -1) {
-                    color[it] = 1 - color[curnode];
+                if(color[it]==-1){
+                    color[it] = 1-color[curnode];
                     q.add(it);
                 }
 
                 //If it has same color
-                else if (color[it] == color[curnode]) {
+                else if(color[it]==color[curnode]){
                     return false;
                 }
             }
@@ -604,46 +453,42 @@ public class Graph {
         return true;
 
     }
-
     private boolean isBipartite(int[][] graph) {
         int V = graph.length;
         int[] color = new int[V];
-        Arrays.fill(color, -1);
+        Arrays.fill(color,-1);
 
-        for (int i = 0; i < V; i++) {
-            if (color[i] == -1) {
+        for(int i=0;i<V;i++){
+            if(color[i]==-1){
                 ///Same call for dfs
-                if (!bfs(i, V, graph, color)) {
+                if(!bfs(i, V, graph, color)){
                     return false;
                 }
             }
         }
         return true;
     }
-
-    private void dfs(int row, int col, int[][] vis, int[][] grid, ArrayList<String> list, int row0, int col0) {
+    private void dfs(int row,int col,int[][] vis,int[][] grid,ArrayList<String> list,int row0,int col0)
+    {
         vis[row][col] = 1;
-        list.add(toString(row - row0, col - col0));
+        list.add(toString(row-row0,col-col0));
         int n = grid.length;
         int m = grid[0].length;
-        int[] drow = {-1, 0, 1, 0};
-        int[] dcol = {0, -1, 0, 1};
+        int[] drow = {-1,0,1,0};
+        int[] dcol = {0,-1,0,1};
 
-        for (int i = 0; i < 4; i++) {
+        for(int i=0;i<4;i++){
             //To goto up/down and left/right
-            int nrow = row + drow[i];
-            int ncol = col + dcol[i];
-            if (nrow >= 0 && nrow < n && ncol >= 0 && ncol < m &&
-                    vis[nrow][ncol] == 0 && grid[nrow][ncol] == 1) {
-                dfs(nrow, ncol, vis, grid, list, row0, col0);
+            int nrow= row+drow[i];
+            int ncol = col+dcol[i];
+            if(nrow >= 0 && nrow < n && ncol>=0 && ncol<m && vis[nrow][ncol]==0 && grid[nrow][ncol] == 1){
+                dfs(nrow,ncol,vis,grid,list,row0,col0);
             }
         }
     }
-
-    private String toString(int r, int c) {
-        return r + " " + c;
+    private String toString(int r,int c){
+        return r +" "+ c;
     }
-
     private int countDistinctIslands(int[][] grid) {
         /*
         TC -> N x M x Log(MxN) + dfs
@@ -655,12 +500,12 @@ public class Graph {
         int[][] vis = new int[n][m];
         HashSet<ArrayList<String>> set = new HashSet<>();
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (vis[i][j] == 0 && grid[i][j] == 1) {
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(vis[i][j] == 0 && grid[i][j] == 1){
                     ArrayList<String> list = new ArrayList<>();
                     //time m x n x 4
-                    dfs(i, j, vis, grid, list, i, j);
+                    dfs(i,j,vis,grid,list,i,j);
                     set.add(list);
                 }
             }
@@ -683,37 +528,36 @@ public class Graph {
         int[][] dist = new int[n][m];
         Queue<Pair3> q = new LinkedList<>();
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (grid[i][j] == 0) {
-                    q.add(new Pair3(i, j, 0));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==0){
+                    q.add(new Pair3(i,j,0));
                     vis[i][j] = 1;
                 }
             }
         }
 
-        int[] drow = {-1, 0, 1, 0};
-        int[] dcol = {0, 1, 0, -1};
+        int[] drow = {-1, 0, 1, 0 };
+        int[] dcol = { 0, 1, 0,-1 };
 
-        while(!q.isEmpty()) {
+        while(!q.isEmpty()){
             int row = q.peek().first;
             int col = q.peek().second;
             int steps = q.peek().third;
             q.remove();
             dist[row][col] = steps;
 
-            for (int i = 0; i < 4; i++) {
+            for(int i=0;i<4;i++){
                 int nrow = row + drow[i];
                 int ncol = col + dcol[i];
-                if (nrow >= 0 && nrow < n && ncol >= 0 && ncol < m && vis[nrow][ncol] == 0) {
+                if(nrow>=0 && nrow<n && ncol>= 0 && ncol <m && vis[nrow][ncol]==0){
                     vis[nrow][ncol] = 1;
-                    q.add(new Pair3(nrow, ncol, steps + 1));
+                    q.add(new Pair3(nrow,ncol,steps+1));
                 }
             }
         }
         return dist;
     }
-
     private boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
         // Code here
         boolean[] vis = new boolean[V];
@@ -739,7 +583,7 @@ public class Graph {
     }
 
     private boolean detectBFS(int src, ArrayList<ArrayList<Integer>> adj, boolean[] vis) {
-        //Cycle detection using bfs in undirected graph
+       //Cycle detection using bfs in undirected graph
         vis[src] = true;
         Queue<Pair2> q = new LinkedList<>();
         q.add(new Pair2(src, -1));
@@ -753,39 +597,36 @@ public class Graph {
                     vis[adjacentNode] = true;
                     q.add(new Pair2(adjacentNode, node));
                 } else if (parent != adjacentNode) { //if parent already visited by other node
-
+                    return true;
                 }
             }
         }
         return false;
     }
-
-    private void dfs(int row, int col, int[][] ans, int[][] image, int newColor, int[] drow, int[] dcol, int iniColor) {
+    private void dfs(int row,int col,int[][] ans,int[][] image,int newColor,int[] drow,int[] dcol,int iniColor){
         ans[row][col] = newColor;
         int n = image.length;
         int m = image[0].length;
 
-        for (int i = 0; i < 4; i++) {
-            int nrow = row + drow[i];
-            int ncol = col + dcol[i];
-            // Boundary check
-            if (nrow >= 0 && nrow < n && ncol >= 0 && ncol < m &&
-                    image[nrow][ncol] == iniColor && ans[nrow][ncol] != newColor) {
-                dfs(nrow, ncol, ans, image, newColor, drow, dcol, iniColor);
+        for(int i=0;i<4;i++){
+            int nrow = row+drow[i];
+            int ncol = col+dcol[i];
+
+            if(nrow>=0 && nrow<n && ncol>=0 && ncol<m &&
+                    image[nrow][ncol] == iniColor && ans[nrow][ncol] != newColor){
+                dfs(nrow,ncol,ans,image,newColor,drow,dcol,iniColor);
             }
         }
 
     }
-
     private int[][] floodFill2aar(int[][] image, int sr, int sc, int color) {
         int iniColor = image[sr][sc];
         int[][] ans = image;
-        int[] drow = {-1, 0, 1, 0};
-        int[] dcol = {0, 1, 0, -1};
-        dfs(sr, sc, ans, image, color, drow, dcol, iniColor);
+        int[] drow = {-1, 0, 1, 0 };
+        int[] dcol = { 0, 1, 0,-1 };
+        dfs(sr,sc,ans,image,color,drow,dcol,iniColor);
         return ans;
     }
-
     private int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
         int color = image[sr][sc];
         if (color != newColor) dfs(image, sr, sc, color, newColor);
@@ -807,14 +648,14 @@ public class Graph {
         SC -> O(mxn)
         TC -> O(mxn)
         */
-        int row = grid.length;
-        int col = grid[0].length;
+        int n = grid.length;
+        int m = grid[0].length;
 
         Queue<Pair> q = new LinkedList<>();
-        int[][] vis = new int[row][col];
+        int[][] vis = new int[n][m];
         int cntfrsh = 0;
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
                 if (grid[i][j] == 2) {
                     q.add(new Pair(i, j, 0));
                     vis[i][j] = 2;
@@ -840,8 +681,7 @@ public class Graph {
             for (int i = 0; i < 4; i++) {
                 int nrow = r + drow[i];
                 int ncol = c + dcol[i];
-                //Checking boundary and main condition
-                if (nrow >= 0 && nrow < row && ncol >= 0 && ncol < col &&
+                if (nrow >= 0 && nrow < n && ncol >= 0 && ncol < m &&
                         vis[nrow][ncol] == 0 && grid[nrow][ncol] == 1) {
                     q.add(new Pair(nrow, ncol, t + 1));
                     vis[nrow][ncol] = 2;
@@ -857,8 +697,7 @@ public class Graph {
 
     private void dfs(int node, boolean[] vis, int[][] mat) {
         vis[node] = true;
-        int nod = mat.length;
-        for (int i = 0; i < nod; i++) {
+        for (int i = 0; i < mat.length; i++) {
             if (mat[node][i] == 1 && !vis[i]) {
                 dfs(i, vis, mat);
             }
@@ -894,11 +733,11 @@ public class Graph {
         TC -> O(N) + O(2E)
         SC -> O(N)
          */
-        // Marking current node as visited
+        //Marking current node as visited
         vis[startnode] = true;
         list.add(startnode);
 
-        // Getting all neighbour node
+        //Getting all neighbour node
         for (Integer it : adj.get(startnode)) {
             if (!vis[it]) {
                 dfs(it, vis, adj, list);
@@ -1020,7 +859,7 @@ public class Graph {
     }
 
     public static void shortestPath(ArrayList<ArrayList<Integer>> adj, int v, int s) {
-        /* Finding the shortest path using BFS*/
+        /* Finding shortest path using BFS*/
         boolean[] visited = new boolean[v + 1];
         int[] dist = new int[v];
         Arrays.fill(dist, Integer.MAX_VALUE);
@@ -1099,10 +938,10 @@ public class Graph {
     public static void addEdgeInAdjacancyList(ArrayList<ArrayList<Integer>> adj, int u, int v) {
        /*
          Using Adjacency List( Linked List impl)
-         Insertion and deletion is better than adj matrix
+         Insertion and deletion is better then adj matrix
         */
         adj.get(u).add(v); // Vertex
-        adj.get(v).add(u); // Edge
+        adj.get(v).add(u); // Edge 
     }
 
     public static void printGraph(ArrayList<ArrayList<Integer>> adj) {

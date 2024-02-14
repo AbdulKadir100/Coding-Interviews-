@@ -211,22 +211,20 @@ public class Matrix {
     }
 
     public static void rotate90(int[][] mat) {
-        int n = mat.length;
+        int r = mat.length;
+        int c = mat[0].length;
+        int[][] t = new int[r][c];
 
-        int[][] t = new int[n][n];
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                t[j][n - i - 1] = mat[i][j];//clock wise
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                t[j][r - i - 1] = mat[i][j];//clock wise
                 // t[r-j-1][i] = mat[i][j];//anti clock wise
             }
         }
-
-        //* Print resultant matrix *//
-        for (int row = 0; row < n; row++) {
-            for (int col = 0; col < n; col++) {
-                mat[row][col] = t[row][col];
-                System.out.print(mat[row][col] + " ");
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                mat[i][j] = t[i][j];
+                System.out.print(mat[i][j] + " ");
             }
             System.out.println();
         }
@@ -236,7 +234,7 @@ public class Matrix {
     public static void transPose(int[][] mat) {
         int row = mat.length;
         int col = mat[0].length;
-       
+        int[][] temp = new int[row][col];
         for (int i = 0; i < row; i++) {
             for (int j = i + 1; j < col; j++) {
                 swap(mat[i][j], mat[j][i]);
@@ -249,9 +247,9 @@ public class Matrix {
     }
 
     private static void swap(int i, int i1) {
-        i = i^i1;
-        i1 = i^i1;
-        i = i^i1;
+        int temp = i;
+        i = i1;
+        i1 = temp;
     }
 
     public static void boundTraversal(int[][] mat) {

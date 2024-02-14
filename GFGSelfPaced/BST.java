@@ -2,11 +2,10 @@ package GFGSelfPaced;
 
 import java.util.*;
 
-class Pair {
+class Pair{
     Node node;
     int hd;
-
-    Pair(Node n, int h) {
+      Pair(Node n,int h){
         node = n;
         hd = h;
     }
@@ -35,92 +34,87 @@ class BSTIterator {
     public boolean hasNext() {
         return !stack.isEmpty();
     }
-
-    public void pushAll(Node node) {
-        for (; node != null; stack.push(node), node = node.left) ;
+    public void pushAll(Node node){
+        for(;node!=null;stack.push(node),node=node.left);
     }
 }
-
 public class BST {
     public static void main(String[] args) {
 
     }
-
-    private Node bstFromPreorder(int[] A, int bound, int[] i) {
+    private Node bstFromPreorder(int[] A,int bound,int[] i) {
         //base case ,if it is cross the length,and len of i should be 1.
-        if (i[0] == A.length || A[i[0]] > bound) return null;
+        if(i[0] == A.length || A[i[0]]>bound)return null;
 
         Node root = new Node(A[i[0]++]);
-        root.left = bstFromPreorder(A, root.key, i);
-        root.right = bstFromPreorder(A, bound, i);
+        root.left = bstFromPreorder(A,root.key,i);
+        root.right = bstFromPreorder(A,bound,i);
         return root;
 
     }
-
-    private boolean isValidBST(Node root, long min, long max) {
-        if (root == null) return true;
-        if (root.key >= max || root.key <= min) return false;
+    private boolean isValidBST(Node root,long min,long max){
+        if (root==null)return true;
+        if (root.key >= max || root.key <= min)return false;
         return isValidBST(root.left, min, max) && isValidBST(root.right, min, max);
 
     }
-
-    private Node deleteNode(Node root, int key) {
-        if (root == null) return null;
-        if (root.key == key) {
+    private Node deleteNode(Node root,int key){
+        if (root==null)return null;
+        if (root.key==key){
             return helper(root);
         }
-        Node dummy = root;
-        while (root != null) {
-            if (root.key > key) {
-                if (root.left != null && root.left.key == key) {
+        Node dummy= root;
+        while (root!=null){
+            if (root.key>key){
+                if (root.left != null && root.left.key==key){
                     root.left = helper(root.left);
                     break;
-                } else {
+                }else {
                     root = root.left;
                 }
-            } else {
-                if (root.right != null && root.right.key == key) {
+            }else {
+                if (root.right != null && root.right.key==key){
                     root.right = helper(root.right);
                     break;
-                } else {
+                }else {
                     root = root.right;
                 }
             }
         }
         return dummy;
-    }
 
-    private Node helper(Node root) {
-        if (root.left == null) {
+    }
+    private Node helper(Node root){
+        if (root.left == null){
             return root.right;
-        } else if (root.right == null) {
+        }else if (root.right==null){
             return root.left;
         }
         Node rightchild = root.right;
         Node lastRight = findLastRight(root.left);
         lastRight.right = rightchild;
         return root.left;
-    }
 
-    private Node findLastRight(Node node) {
-        if (node.right == null) return node;
+
+
+    }
+    private Node findLastRight(Node node){
+        if (node.right==null)return node;
         return findLastRight(node.right);
     }
-
     private Node insertIntoBST(Node root, int val) {
-        if (root == null) return new Node(val);
-        if (root.key > val) root.left = insertIntoBST(root.left, val);
-        else root.right = insertIntoBST(root.right, val);
+        if(root==null) return new Node(val);
+        if(root.key > val) root.left =  insertIntoBST(root.left,val);
+        else  root.right = insertIntoBST(root.right,val);
         return root;
     }
-
-    private int findfloor(Node root, int key) {
-        int floor = -1;
-        if (root.key == key) {
+    private int findfloor(Node root,int key){
+        int floor=-1;
+        if (root.key == key){
             floor = root.key;
             return floor;
         }
-        if (key > root.key) {
+        if (key > root.key){
             floor = root.key;
             root = root.right;
         } else {
@@ -128,14 +122,13 @@ public class BST {
         }
         return floor;
     }
-
-    private int findCeil(Node root, int key) {
-        int ciel = -1;
-        if (root.key == key) {
+    private int findCeil(Node root,int key){
+        int ciel=-1;
+        if (root.key == key){
             ciel = root.key;
             return ciel;
         }
-        if (key > root.key) {
+        if (key > root.key){
             root = root.right;
         } else {
             ciel = root.key;
@@ -143,39 +136,37 @@ public class BST {
         }
         return ciel;
     }
-
-    void veticalOrder(Node root) {
+    void veticalOrder(Node root){
         Queue<Pair> q = new LinkedList<>();
-        Map<Integer, ArrayList<Integer>> map = new TreeMap<>();
-        q.add(new Pair(root, 0));
-        while (!q.isEmpty()) {
+        Map<Integer,ArrayList<Integer>> map = new TreeMap<>();
+        q.add(new Pair(root,0));
+        while (!q.isEmpty()){
             Pair p = q.poll();
             Node curr = p.node;
             int hd = p.hd;
-            if (map.containsKey(hd)) {
+            if (map.containsKey(hd)){
                 //For vertical view of a tree,we can ignore if it already present.
                 map.get(hd).add(curr.key);
-            } else {
+            }else {
                 ArrayList<Integer> al = new ArrayList<>();
                 al.add(curr.key);
-                map.put(hd, al);
+                map.put(hd,al);
             }
-            if (curr.left != null) {
-                q.add(new Pair(curr.left, hd - 1));
+            if (curr.left!=null){
+                q.add(new Pair(curr.left,hd-1));
             }
-            if (curr.right != null) {
-                q.add(new Pair(curr.right, hd + 1));
+            if (curr.right!=null){
+                q.add(new Pair(curr.right,hd+1));
             }
             //Printing element from map
-            for (Map.Entry<Integer, ArrayList<Integer>> mp : map.entrySet()) {
+            for (Map.Entry<Integer,ArrayList<Integer>> mp : map.entrySet()) {
                 ArrayList<Integer> al = mp.getValue();
                 for (int x : al)
-                    System.out.println(x + " ");
+                    System.out.println(x+" ");
                 System.out.println();
             }
         }
     }
-
     void vertSum(Node root, int hd, TreeMap<Integer, Integer> map) {
         if (root == null)
             return;
@@ -207,7 +198,7 @@ public class BST {
     }
 
     void fixBST(Node root) {
-        //this code would not swap the data,rather it would identify.
+        //this code would not swapped the data,rather it would identifying.
 
         Node first = null, second = null, prev = null;
         if (root == null)

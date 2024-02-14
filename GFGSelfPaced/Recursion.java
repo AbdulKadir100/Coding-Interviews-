@@ -84,8 +84,7 @@ public class Recursion {
     public static void fun(int l, int r) {
     /*
     Applying recursion to reverse the array using two pointer l and r
-    Hack - It reverse without loop
-    */
+     */
         if (l >= r)
             return;
         swap(arr[l], arr[r]);

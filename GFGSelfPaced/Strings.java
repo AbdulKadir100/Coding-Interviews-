@@ -14,7 +14,6 @@ public class Strings {
 
     static final int CHAR = 256;
 public static String StringChellenge(String str){
-    
     str= str.toLowerCase().replaceAll("\\W","");
     if (isPalindrome(str))
         return "true";
@@ -23,25 +22,6 @@ public static String StringChellenge(String str){
     public static void main(String[] args) {
         fn("bubble");
         
-    }
-    public boolean closeStrings(String word1, String word2) {
-        int n1=word1.length(),n2=word2.length();
-
-        if(n1==n2)return false;
-        Set<Character> set1 = new HashSet<>();
-        Set<Character> set2 = new HashSet<>();
-
-        for(int i=0;i<n1;i++){
-            set1.add(word1.charAt(i));
-        }
-        for(int j=0;j<n2;j++){
-            set2.add(word2.charAt(j));
-        }
-        for(char c:set1){
-            if(set2.contains(c))
-                return true;
-        }
-        return false;
     }
     public static String reverseWords(String s){
         String[] sarr = s.split(" ");

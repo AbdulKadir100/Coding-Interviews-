@@ -44,17 +44,6 @@ public class Hashing {
 
 
     }
-
-
-    public boolean uniqueOccurrences(int[] arr) {
-        Map<Integer,Integer> map= new HashMap<>();
-
-        for(int i:arr){
-            map.put(i,map.getOrDefault(i,0)+1);
-        }
-        Set<Integer> set = new HashSet<>(map.values());
-        return map.size() == set.size();
-    }
     public List<String> topKFrequent(String[] words, int k) {
         TreeMap<String, Integer> map = new TreeMap<>(String::compareTo);
         Arrays.stream(words).forEach(x -> map.put(x, map.getOrDefault(x, 0) + 1));

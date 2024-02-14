@@ -36,7 +36,6 @@ class Tuple {
 
 public class Tree {
     Node prev = null;
-    static Node root;
 
     static class Pair {
         int x;
@@ -49,207 +48,171 @@ public class Tree {
     }
 
     public static void main(String[] args) {
-        Tree tree = new Tree();
-        tree.root = new Node(10);
-        tree.root.left = new Node(8);
-        tree.root.right = new Node(2);
-        tree.root.left.right = new Node(5);
-        tree.root.left.right.left = new Node(0);
-        tree.root.left.right.right = new Node(0);
-        tree.root.right.right = new Node(0);
-        tree.root.right.right.left = new Node(2);
-        tree.root.left.left = new Node(3);
-        System.out.println(isChildSum(root));
 
     }
-
-    void pathhelp(Node node, int target, List<Integer> curres, List<List<Integer>> res) {
-        if (node == null) return;
+    void pathhelp(Node node,int target, List<Integer> curres,List<List<Integer>> res){
+        if(node==null)return ;
 
         curres.add(node.key);
 
-        if (node.key == target && node.left == null && node.right == null) {
+        if(node.key == target && node.left==null && node.right==null){
             res.add(new ArrayList<>(curres));
-        } else {
-            pathhelp(node.left, target - node.key, curres, res);
-            pathhelp(node.right, target - node.key, curres, res);
+        }else {
+            pathhelp(node.left,target-node.key,curres,res);
+            pathhelp(node.right,target-node.key,curres,res);
 
         }
-        curres.remove(curres.size() - 1);
+        curres.remove(curres.size()-1); 
 
 
     }
-
-    private List<List<Integer>> pathSum_2(Node root, int targetSum) {
+    private List<List<Integer>> pathSum_2(Node root,int targetSum){
         List<List<Integer>> res = new ArrayList<>();
         List<Integer> curres = new ArrayList<>();
-        pathhelp(root, targetSum, curres, res);
+        pathhelp(root,targetSum,curres,res);
         return res;
     }
-
-    private void propertySum(Node root) {
+    private void propertySum(Node root){
         /*
         Tc-> O(N)
         SC -> O(N) if it skewed tree
          */
-        if (root == null) return;
-        int child = 0;
-        if (root.left != null) {
-            child += root.left.key;
+        if (root==null)return;
+        int child=0;
+        if (root.left!=null){
+            child+=root.left.key;
         }
-        if (root.right != null) {
-            child += root.right.key;
+        if(root.right!=null){
+            child+=root.right.key;
         }
 
-        if (child >= root.key) root.key = child;
+        if (child>= root.key) root.key=child;
         else {
-            if (root.left != null) root.left.key = root.key;
-            else if (root.right != null) root.right.key = root.key;
+            if (root.left!=null)root.left.key = root.key;
+            else if (root.right!=null) root.right.key = root.key;
         }
         propertySum(root.left);
         propertySum(root.right);
 
-        int tot = 0;
-        if (root.left != null) tot += root.left.key;
-        if (root.right != null) tot += root.right.key;
-        if (root.left != null || root.right != null) root.key = tot;
+        int tot=0;
+        if (root.left!=null)tot+=root.left.key;
+        if (root.right!=null)tot+=root.right.key;
+        if (root.left!=null || root.right!=null)root.key= tot;
 
 
     }
-
     private void flatten(Node root) {
         /*
         Reverse PostOrder
         TC -> O(N)
         SC -> O(N)
          */
-        Node prev = null;
-        if (root == null) return;
+        Node prev=null;
+        if(root == null)return;
         flatten(root.right);
         flatten(root.left);
         root.right = prev;
         root.left = null;
         prev = root;
     }
-
     private boolean isSymmetric(Node left, Node right) {
         if (left == null || right == null)
-            return left == right;
+            return left==right;
 
-        if (left.key != right.key) return false;
+        if(left.key != right.key) return false;
         return isSymmetric(left.left, right.right)
                 && isSymmetric(left.right, right.left);
     }
 
-    private int maxPathSum(Node node, int[] maxval) {
-        //the size of the max_val should be 1.
-        if (node == null) return 0;
-        int left = Math.max(0, maxPathSum(node.left, maxval));
-        int right = Math.max(0, maxPathSum(node.right, maxval));
-        maxval[0] = Math.max(maxval[0], left + right + node.key);
-        return Math.max(left, right) + node.key;
+    private int maxPathSum(Node node,int[] maxval){
+        //the size of the maxval should be 1.
+        if (node==null)return 0;
+        int left = Math.max(0,maxPathSum(node.left,maxval));
+        int right = Math.max(0,maxPathSum(node.right,maxval));
+        maxval[0] = Math.max(maxval[0],left+right+node.key);
+        return Math.max(left,right)+node.key;
     }
-
-    private static ArrayList<Integer> traverseBoundary(Node root) {
+    private static  ArrayList<Integer> traverseBoundary(Node root){
         // Write your code here.
         ArrayList<Integer> ans = new ArrayList<>();
-        if (!isLeaf(root)) {
+        if(!isLeaf(root)){
             ans.add(root.key);
         }
-        addLeftBoundary(root, ans); // add left side node
-        addLeaves(root, ans);       // add leaves node
-        addRightBoundary(root, ans);// add right side node
+        addLeftBoundary(root,ans);
+        addLeaves(root,ans);
+        addRightBoundary(root,ans);
         return ans;
     }
-
-    private static void addLeaves(Node root, ArrayList<Integer> list) {
-        if (isLeaf(root)) {
+    private static void addLeaves(Node root, ArrayList<Integer> list){
+        if (isLeaf(root)){
             list.add(root.key);
             return;
         }
-        if (root.left != null) addLeaves(root.left, list);
+        if (root.left!=null)addLeaves(root.left, list);
         if (root.right != null) addLeaves(root.right, list);
     }
-
-    private static void addRightBoundary(Node root, ArrayList<Integer> list) {
-        /*
-        Right Boundary –
-        Dont Include Leaf nodes. (as it leads to duplication)
-        Leaf Boundary – Do inorder/preorder, if leaf node add to the List.
-         */
+    private static void addRightBoundary(Node root, ArrayList<Integer> list){
         Node cur = root.right;
         ArrayList<Integer> res = new ArrayList<>();
-        while (cur != null) {
-            if (!isLeaf(cur)) {
+        while (cur!=null){
+            if(!isLeaf(cur)){
                 res.add(cur.key);
             }
-            if (cur.right != null)
+            if(cur.right!=null)
                 cur = cur.right;
             else
                 cur = cur.left;
         }
         int i;
-        for (i = res.size() - 1; i >= 0; --i) {
-            list.add(res.get(i));
+        for(i = res.size()-1;i>=0;--i){
+           list.add(res.get(i));
         }
 
     }
-
-    private static void addLeftBoundary(Node root, ArrayList<Integer> list) {
-        /*
-        Left Boundary – Go Left Left until no Left.
-        Don't Include Leaf nodes. (as it leads to duplication)
-
-        Leaf Boundary – Do inorder/preorder, if leaf node add to the List.
-        */
+    private static void addLeftBoundary(Node root, ArrayList<Integer> list){
         Node cur = root.left;
-        while (cur != null) {
-            if (!isLeaf(cur)) {
+        while (cur!=null){
+            if(!isLeaf(cur)){
                 list.add(cur.key);
             }
-            if (cur.left != null)
+            if(cur.left!=null)
                 cur = cur.left;
             else
                 cur = cur.right;
         }
 
     }
-
-    private static boolean isLeaf(Node root) {
-        return (root.left == null) && (root.right == null);
+    private static boolean isLeaf(Node root){
+        return (root.left==null) && (root.right==null);
     }
-
     private boolean isSameTree(Node p, Node q) {
-        if (p == null && q == null) return true;
-        if (p == null || q == null) return false;
+        if(p==null && q==null)return true;
+        if(p==null || q==null)return false;
 
         //checking the subtrees
-        return p.key == q.key && isSameTree(p.left, q.left) &&
-                                 isSameTree(p.right, q.right);
+        return p.key==q.key && isSameTree(p.left,q.left) && isSameTree(p.right,q.right);
     }
-
     private Node lowestCommonAncestor(Node root, Node p, Node q) {
         /*
         TC -> O(N)
         SC -> O(w)stack space
          */
-        if (root == null || p == root || q == root)
+        if(root == null || p==root || q==root)
             return root;
 
-        Node left = lowestCommonAncestor(root.left, p, q);
-        Node right = lowestCommonAncestor(root.right, p, q);
+        Node left = lowestCommonAncestor(root.left,p,q);
+        Node right = lowestCommonAncestor(root.right,p,q);
 
         //result
-        if (left == null) {
+        if(left == null){
             return right;
-        } else if (right == null) {
+        }else if(right == null){
             return left;
-        } else {
+        }else{
             //else both are null we found our result
             return root;
         }
     }
-
     private int widthOfBinaryTree(Node root) {
         /*
         TC -> O(N) LO traversal
@@ -315,7 +278,7 @@ public class Tree {
         /*
         TC -> O(N)logN
         SC -> O(N)
-        */
+         */
         TreeMap<Integer, TreeMap<Integer, PriorityQueue<Integer>>> map = new TreeMap<>();
         Queue<Tuple> q = new LinkedList<>();
         q.offer(new Tuple(root, 0, 0));
@@ -329,7 +292,7 @@ public class Tree {
             if (!map.containsKey(x)) {
                 map.put(x, new TreeMap<>());
             }
-            //if Priority doesn't exist,we are creating.
+            //if Priority doesn't exist,we creating.
             if (!map.get(x).containsKey(y)) {
                 map.get(x).put(y, new PriorityQueue<>());
             }
@@ -354,8 +317,8 @@ public class Tree {
                     System.out.println(nodes.peek());
                     list.get(list.size() - 1).add(nodes.poll());
 
-
                 }
+
             }
         }
         return list;
@@ -378,6 +341,7 @@ public class Tree {
                 root = root.left;
             }
         }
+
         System.out.println(predessor + " " + successor);
     }
 
@@ -429,28 +393,23 @@ public class Tree {
     }
 
 
-    private Node reverseOddLevels(Node root) {
-        //lvl starting from 1
-        dfs(root.left, root.right, 1);
-        return root;
-    }
-
-    private void dfs(Node node1, Node node2, int lvl) {
-        // preorder
-        if (node1 == null || node2 == null) return;
-
-        // check the level odd or not
-        if (lvl % 2 == 1) {
-            // swap the nodes
-            int temp = node1.key;
-            node1.key = node2.key;
-            node2.key = temp;
+        private Node reverseOddLevels(Node root) {
+            //lvl starting from 1
+            dfs(root.left,root.right,1);
+            return root;
         }
+        private void dfs(Node node1,Node node2,int lvl){
+            if(node1==null || node2 == null)return;
 
-        // go to both end of tree
-        dfs(node1.left, node2.right, lvl + 1);
-        dfs(node1.right, node2.left, lvl + 1);
-    }
+            if(lvl%2==1){
+                int temp = node1.key;
+                node1.key = node2.key;
+                node2.key = temp;
+            }
+
+            dfs(node1.left,node2.right,lvl+1);
+            dfs(node1.right,node2.left,lvl+1);
+        }
 
 
     private void mirror(Node root) {
@@ -462,6 +421,19 @@ public class Tree {
         }
     }
 
+    private void itrativeInorder(Node root) {
+        Stack<Node> s = new Stack<>();
+        Node curr = root;
+        while (curr != null || !s.isEmpty()) {
+            while (curr != null) {
+                s.push(curr);
+                curr = curr.left;
+            }
+            s.pop();
+            System.out.print(curr.key);
+            curr = curr.right;
+        }
+    }
 
     private int countNode(Node root) {
         int lh = 0, rh = 0;
@@ -480,15 +452,11 @@ public class Tree {
         }
         return 1 + countNodes(root.left) + countNodes(root.right);
 //        if (lca1!=null && lca2!=null)
-//
 //            return root;
 //        return (lca1!=null)?lca1:lca2;
     }
 
     private static int daimeterOfTree(Node root) {
-        /*
-        Time -> O(nxn)
-         */
         if (root == null)
             return 0;
 
@@ -499,10 +467,11 @@ public class Tree {
 
     }
 
-    private static void printSpiral(Node root) {
-
+    private static List<List<Integer>> printSpiral(Node root) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
         if (root == null)
-            return;
+            return new ArrayList<>();
         Queue<Node> q = new LinkedList<>();
         Stack<Integer> s = new Stack<>();
         boolean reverse = false;
@@ -515,7 +484,8 @@ public class Tree {
                 if (reverse)
                     s.push(curr.key);
                 else {
-                    System.out.print(curr.key + " ");
+                    list.add(curr.key);
+                    //System.out.print(curr.key + " ");
                 }
 
                 if (curr.left != null) {
@@ -523,17 +493,22 @@ public class Tree {
                 }
                 if (curr.right != null)
                     q.add(curr.right);
-
+                res.add(list);
             }
             if (reverse) {
                 while (!s.isEmpty()) {
-                    System.out.print(s.pop() + " ");
+                    //System.out.print(s.pop()+" ");
+                    list.add(s.pop());
                 }
             }
             //after a level complete
             reverse = !reverse;
-            System.out.println();
+
+            // System.out.println();
+
         }
+
+        return res;
     }
 
     public Node constrctTree(int[] in, int[] pre, int is, int ie) {
@@ -593,12 +568,7 @@ public class Tree {
         return Math.abs(hl - hr) <= 1 && isBalance(root.left) && isBalance(root.right);
     }
 
-    public static boolean isChildSum(Node root) {
-        /*
-        Given a binary tree, the task is to check for every node,
-        its value is equal to the sum of values of its immediate left and right child.
-        For NULL values, consider the value to be 0.
-         */
+    public boolean isChildSum(Node root) {
         if (root == null)
             return true;
         if (root.left == null && root.right == null)
@@ -614,8 +584,7 @@ public class Tree {
     }
 
     static int maxInBT(Node root) {
-        return (root != null) ? Math.max(root.key,
-                Math.max(maxInBT(root.left), maxInBT(root.right))) : Integer.MIN_VALUE;
+        return (root != null) ? Math.max(root.key, Math.max(maxInBT(root.left), maxInBT(root.right))) : Integer.MIN_VALUE;
     }
 
     public int countNodes(Node root) {
@@ -636,7 +605,6 @@ public class Tree {
             int x = p.x;
             Node cur = p.node;
 
-            //Store into map the node and value of the edge
             map.put(x, cur.key);
 
             if (cur.left != null) {
@@ -663,7 +631,7 @@ public class Tree {
     }
 
     static void printLeftView(Node root) {
-       // ArrayList<Integer> list = new ArrayList<>();
+        ArrayList<Integer> list = new ArrayList<>();
         if (root == null)
             return;
         Queue<Node> q = new LinkedList<>();
@@ -673,20 +641,10 @@ public class Tree {
             int count = q.size();
             for (int i = 0; i < count; i++) {
                 Node curr = q.poll();
-                if (i == 0) {
-                    //list.add(curr.key);
-                    System.out.print(curr.key + " ");
+                if (i == 0) {  //For printing right view use i=count-1.
+                    list.add(curr.key);
+                    //System.out.print(curr.key + " ");
                 }
-                /*
-                To print right view just interchange below lines
-                eg,
-                if (curr.right != null) {
-                    q.add(curr.left);
-                }
-                if (curr.left != null) {
-                    q.add(curr.right);
-                }
-                */
                 if (curr.left != null) {
                     q.add(curr.left);
                 }
@@ -697,7 +655,7 @@ public class Tree {
     }
 
     static void levelOrdernewLineEffi(Node root) {
-
+       
         if (root == null)
             return;
         Queue<Node> q = new LinkedList<>();
@@ -756,7 +714,8 @@ public class Tree {
     static int heightBinaryTree(Node root) {
         if (root == null)
             return 0;
-        return Math.max(heightBinaryTree(root.left), heightBinaryTree(root.right)) + 1;
+        return Math.max(heightBinaryTree(root.left),
+                heightBinaryTree(root.right)) + 1;
     }
 
     static void levelOrder(Node root) {
@@ -775,34 +734,6 @@ public class Tree {
         }
     }
 
-    private static void ItrativePostorder(Node root) {
-        if (root == null) {
-            return;
-        }
-
-        Stack<Node> stack1 = new Stack<>();
-        Stack<Node> stack2 = new Stack<>();
-        stack1.push(root);
-
-        while (!stack1.isEmpty()) {
-            Node current = stack1.pop();
-            stack2.push(current);
-
-            if (current.left != null) {
-                stack1.push(current.left);
-            }
-
-            if (current.right != null) {
-                stack1.push(current.right);
-            }
-        }
-
-        while (!stack2.isEmpty()) {
-            Node current = stack2.pop();
-            System.out.print(current.key + " ");
-        }
-    }
-
     static void postorder(Node root) {
         if (root != null) {
             postorder(root.left);
@@ -811,54 +742,11 @@ public class Tree {
         }
     }
 
-    private static void itrativepreorder(Node root) {
-        if (root == null) {
-            return;
-        }
-
-        Stack<Node> stack1 = new Stack<>();
-        Stack<Node> stack2 = new Stack<>();
-        stack1.push(root);
-
-        while (!stack1.isEmpty()) {
-            Node current = stack1.peek();
-            //  stack2.push(current);
-
-            if (current.left != null) {
-                stack1.push(current.left);
-            }
-
-            if (current.right != null) {
-                stack1.push(current.right);
-            }
-        }
-
-        while (!stack1.isEmpty()) {
-            stack2.push(stack1.pop());
-            Node current = stack2.pop();
-            System.out.print(current.key + " ");
-        }
-    }
-
     static void preorder(Node root) {
         if (root != null) {
             System.out.print(root.key + " ");
             preorder(root.left);
             preorder(root.right);
-        }
-    }
-
-    private void itrativeInorder(Node root) {
-        Stack<Node> s = new Stack<>();
-        Node curr = root;
-        while (curr != null || !s.isEmpty()) {
-            while (curr != null) {
-                s.push(curr);
-                curr = curr.left;
-            }
-            s.pop();
-            System.out.print(curr.key);
-            curr = curr.right;
         }
     }
 

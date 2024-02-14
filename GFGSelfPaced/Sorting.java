@@ -6,24 +6,22 @@ public class Sorting {
     public static void main(String[] args) {
         int[] a = new int[]{7, 3, 2, 4, 9, 12, 56};
 
-        System.out.println(chocoDistribute(a, 3));
+        System.out.println(chocoDistribute(a,3));
 
     }
-
-    static void noOfPossibleTrianlge(int[] arr) {
+    static void noOfPossibleTrianlge(int[] arr){
         int n = arr.length;
-        if (n == 3)
+        if (n==3)
             System.out.println(1);
-        int i = 0, j = 0;
+        int i=0,j=0;
         for (; i < n; i++) {
             for (; j < 3; j++) {
-                System.out.print(arr[j] + " ");
+                System.out.print(arr[j]+" ");
             }
-            i = j + 1;
+            i = j+1;
             System.out.println();
         }
     }
-
     public static void sortColors(int[] nums) {
  /*
         Using Dutch National Flag Algorithm,Extended version of Hoar's algorithm.
@@ -46,45 +44,43 @@ public class Sorting {
         }
         System.out.println(Arrays.toString(nums));
     }
-
-    static void countingSorting(int[] arr) {
+    static void countingSorting(int[] arr){
         /*
         This algorithm based on number of occurrence not on comparison based.
         Time O(n),space O(n) algorithm.
          */
         int n = arr.length;
-        int k = n;
+        int k= n;
         int[] count = new int[k];
-        for (int j : arr) {
-            count[j]++;
+        for (int i = 0; i < n; i++) {
+            count[arr[i]]++;
         }
         for (int i = 1; i < k; i++) {
-            count[i] = count[i - 1] + count[i];
+            count[i] = count[i-1]+count[i];
         }
         int[] output = new int[n];
-        for (int i = n - 1; i >= 0; i--) {
-            output[count[arr[i]] - 1] = arr[i];
+        for (int i = n-1; i >= 0; i--) {
+            output[count[arr[i]]-1] = arr[i];
             count[arr[i]]--;
         }
         for (int i = 0; i < n; i++) {
-            arr[i] = output[i];
+            arr[i]  = output[i];
         }
         System.out.println(Arrays.toString(arr));
     }
-
-    static void heapSort(int[] arr) {
+    static void heapSort(int[] arr){
         int n = arr.length;
         buildHeap(arr);
-        for (int i = n - 1; i >= 1; i--) {
-            swap(arr[0], arr[i]);
-            maxHeapify(arr, i);
+        for (int i = n-1; i >= 1 ; i--) {
+            swap(arr[0],arr[i]);
+            maxHeapify(arr,i);
         }
     }
 
-    static void buildHeap(int[] arr) {
+    static void buildHeap(int[] arr){
         int n = arr.length;
-        for (int i = (n - 2) / 2; i >= 0; i--) {
-            maxHeapify(arr, i);
+        for (int i = (n-2)/2; i >= 0; i--) {
+            maxHeapify(arr,i);
         }
     }
 
@@ -124,26 +120,6 @@ public class Sorting {
         return res;
     }
 
-    public static int[] topKFrequent(int[] nums, int k) {
-        // Based on partition of the array
-        int[] res = new int[k];
-        int l = 0, r = nums.length - 1, i = 0;
-        while (l <= r) {
-            int pivot = lomutoPartition(nums, l, r);
-            if (pivot == k) {
-                if (nums[r] != nums[r + 1]) {
-                    res[i] = nums[pivot];
-                }
-            } else if (pivot > k) {
-                r = pivot - 1;
-            } else {
-                l = pivot + 1;
-            }
-            i++;
-        }
-        return res;
-    }
-
     static int getMinDiff(int[] arr) {
         int res = Integer.MAX_VALUE;
         Arrays.sort(arr);
@@ -157,10 +133,6 @@ public class Sorting {
         /*
         Using Dutch National Flag Algorithm,Extended version of Hoar's algorithm.
         Just One Traversal need to complete.
-        To sort an array containing only 0s, 1s, and 2s, you can use
-        the Dutch National Flag algorithm, also known as the 3-way partitioning algorithm.
-        This algorithm efficiently sorts the array in a single pass with
-        a time complexity of O(n),
         Time O(n),Space constant.
          */
         int n = arr.length;
@@ -215,8 +187,8 @@ public class Sorting {
     }
 
     static int kthSmallest(int[] arr, int k) {
-        // Known As Quick Select Algorithm(QSA).
-        // Assuming 0 base indexing
+        //Known As Quick Select Algorithm.
+
         int n = arr.length, l = 0, r = n - 1;
         while (l <= r) {
             int p = lomutoPartition(arr, l, r);
@@ -241,7 +213,7 @@ public class Sorting {
     static int hoarsPartition(int[] arr, int l, int h) {
         /*
         Picking first element as a pivot and sent it to its correspond place.
-        */
+         */
         int pivot = arr[l];
         int i = l - 1, j = h + 1;
         while (true) {
@@ -261,7 +233,6 @@ public class Sorting {
         /*
         TC -> O(N)
         Picking last element as a pivot and sent it to its correspond place
-        arr = [10, 7, 8, 9, 1, 5]
          */
         int pivot = arr[h];
         int i = l - 1;
@@ -328,7 +299,7 @@ public class Sorting {
             }
             k++;
         }
-        //Remaining elements
+
         while (i < n1) {
             arr[k++] = left[i++];
         }
@@ -362,7 +333,7 @@ public class Sorting {
                 System.out.print(a[i++] + " ");
                 //i++;
             }
-            while (j < n && b[j] != b[j - 1]) {
+            while (j < m && b[j] != b[j - 1]) {
                 System.out.print(b[j++] + " ");
                 //j++;
             }
@@ -411,28 +382,28 @@ public class Sorting {
         while (i < m && j < n) {
             if (a[i] <= b[j]) {
                 System.out.print(a[i] + " ");
-                i += 1;
+                i+=1;
             } else {
                 System.out.print(b[j] + " ");
-                j += 1;
+                j+=1;
             }
         }
         //Get all the remaining from the both the array
 
         while (i < n) {
             System.out.print(a[i] + " ");
-            i += 1;
+            i+=1;
         }
         while (j < m) {
             System.out.print(b[j] + " ");
-            j += 1;
+            j+=1;
         }
 
     }
 
     public static void intersectionTwoArrayEff(int[] nums1, int[] nums2) {
         int m = nums1.length, n = nums2.length;
-        // int[] a = new int[m];
+       // int[] a = new int[m];
         int i = 0, j = 0;
         //It will work for if both array has same length.
         while (i < m && j < n) {
@@ -477,22 +448,22 @@ public class Sorting {
                 if (nums[j] < nums[min_ind]) {
                     min_ind = j;
                 }
-                swap(nums[i], nums[min_ind]);
+                swap(nums[i],nums[min_ind]);
             }
         }
         System.out.println(Arrays.toString(nums));
     }
 
-    public static void insertionSort(int[] arr) {
+    public static void insertionSort(int[] arr){
         int n = arr.length;
         for (int i = 1; i < n; i++) {
             int key = arr[i];
-            int j = i - 1;
-            while (j >= 0 && arr[j] > key) {
-                arr[j + 1] = arr[j];
+            int j = i-1;
+            while (j>=0 && arr[j]>key){
+                arr[j+1] = arr[j];
                 j--;
             }
-            arr[j + 1] = key;
+            arr[j+1] = key;
         }
     }
 
@@ -501,11 +472,12 @@ public class Sorting {
         Bubble Sort	, Best Ω(n)	Avg Θ(n^2)	Worst O(n^2)
          */
         int n = arr.length;
-        for (int i = 0; i < n - 1; i++)
-            for (int j = 0; j < n - i - 1; j++)
-                if (arr[j] > arr[j + 1]) {
+        for (int i = 0; i < n-1; i++)
+            for (int j = 0; j < n-i-1; j++)
+                if (arr[j] > arr[j+1])
+                {
                     // swap arr[j+1] and arr[j]
-                    swap(arr[j + 1], arr[j]);
+                    swap(arr[j+1],arr[j]);
                 }
     }
 
@@ -516,4 +488,23 @@ public class Sorting {
     }
 
 
+    public static int[] topKFrequent(int[] nums, int k) {
+        // Based on partition of the array
+         int[] res = new int[k];
+         int l=0,r= nums.length-1,i=0;
+        while (l <= r) {
+            int pivot = lomutoPartition(nums, l, r);
+            if (pivot == k) {
+                if (nums[r]!=nums[r+1]) {
+                    res[i] = nums[pivot];
+                }
+            }else if (pivot > k) {
+                r = pivot - 1;
+            }else {
+                l = pivot + 1;
+            }
+            i++;
+        }
+        return res;
+    }
 }

@@ -3,15 +3,12 @@ package GFGSelfPaced;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.time.LocalDate;
 import java.util.Arrays;
 
 public class Maths {
     public static void main(String[] args) throws IOException {
-        // int[] ar = new int[]{1,13,2,31,17};
-        LocalDate d1 = LocalDate.parse("2022-6-21");
-        LocalDate d = java.time.LocalDate.now();
-        ///LocalDate res = d.minus(d1);
+         int[] ar = new int[]{1,13,2,31,17};
+        System.out.println(countEmirp(ar,5));
     }
     public static int countEmirp(int[] input1,int input2){
         int count=0;

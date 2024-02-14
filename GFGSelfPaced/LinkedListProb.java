@@ -17,7 +17,6 @@ class LinkNode {
 
     }
 
-
     public LinkNode(int i, LinkNode head) {
         data = i;
         next = head;
@@ -90,7 +89,6 @@ class DoubleList {
             head.prev = temp;
 
         return temp;
-        
     }
 }
 
@@ -193,7 +191,7 @@ public class LinkedListProb {
             }
             tmp.next = l2;
 
-            //swap 
+            //swap
             swap(l1,l2);
 
         }
@@ -223,21 +221,6 @@ public class LinkedListProb {
 
     }
     private LinkNode deleteNodePointerGiven(LinkNode head,int n){
-        /*
-        Time -> O(n)+O(n)
-        Space -> O(1)
-        Approach 1-: start counting node from head to last node as a length of list
-        then subtract from given n and then traverse again from head up to temp and make
-        temp's next next
-        ex: temp = count-n
-        temp.next = temp.next.next
-
-        Approach 2: described below
-        Time -> O(N)
-        Space -> O(1)
-        Single loop requires
-
-         */
         LinkNode curr = new LinkNode();
         curr.next = head;
         LinkNode slow = curr,fast = curr;
@@ -255,6 +238,7 @@ public class LinkedListProb {
         }
         slow.next = slow.next.next;
         return head;
+
     }
     private LinkNode reverseListEff(LinkNode head) {
         // Reversing start to end whole list
@@ -276,23 +260,16 @@ public class LinkedListProb {
     public int intersectionPointOfTwoList(LinkNode l1,LinkNode l2){
         int c1=0,c2=0;
         LinkNode curr1=l1,curr2=l2;
-        while (curr1!=null || curr2!=null){
-            if(curr1!=null) {
-                c1++;
-                curr1 = curr1.next;
-            }
-            if(curr2!=null) {
-                c2++;
-                curr2 = curr2.next;
-            }
+        while (curr1!=null){
+            c1++;
+            curr1 = curr1.next;
+        }
+        while (curr2!=null){
+            c2++;
+            curr2 = curr2.next;
         }
         int d = Math.abs(c1-c2);
-        if(d<0)
-            while (d++!=0)curr2=curr2.next;
-        else
-            while(d--!=0) curr1 = curr1.next;
-
-        while ( curr1!=null){
+        while (curr1!=null && curr2!=null){
             if(curr1==curr2)
                 return curr1.data;
             curr1 = curr1.next;
@@ -340,7 +317,6 @@ public class LinkedListProb {
                 tail = tail.next;
             }
         }
-        // add all the remaining list either list1 or list2
         tail.next = (list1 != null) ? list1 : list2;
         return dummyHead.next;
     }
@@ -385,7 +361,7 @@ public class LinkedListProb {
             return head;
         LinkNode cur = head;
         while (cur!=null && cur.next!=null){
-            //swap(cur.data,cur.next.data);
+          //  swap(cur.data,cur.next.data);
             cur = cur.next.next;
         }
         return head;
@@ -432,7 +408,7 @@ public class LinkedListProb {
         while (slow!=null && fast.next==null){
             slow = slow.next;
             fast = fast.next.next;
-            if (slow == fast)
+            if (slow==fast)
                 break;
         }
         if (slow!=fast)
@@ -483,7 +459,7 @@ public class LinkedListProb {
         return restTail;
     }
     LinkNode reverseListEffUptoK(LinkNode head,int k) {
-    // Reversing list up to k elements,if less than k reverse them too.
+    // Reversing list upto k elements,if less then k reverse them too.
 
         LinkNode curr = head;
         LinkNode prev = null;
@@ -503,10 +479,9 @@ public class LinkedListProb {
 
     public LinkNode reverseList(LinkNode head) {
         /*
-        Brute force approach
         Not a efficient sol coz required two traversal
         and extra space aux space.
-        */  
+        */
         ArrayList<Integer> list = new ArrayList<>();
         for (LinkNode curr = head; curr != null; curr = curr.next) {
             list.add(curr.data);
@@ -590,17 +565,17 @@ public class LinkedListProb {
         return head;
     }
 
-    LinkNode removeNthFromStart(LinkNode head, int n) {
+    LinkNode removeNthFromEnd(LinkNode head, int n) {
         LinkNode cur = head;
         int count = 0;
         if (head.next == null && n == 1)
             return head;
-        while (n >= 1) {
+        while (n > 1) {
             cur = cur.next;
             n--;
         }
         cur.next = cur.next.next;
-        return head;
+        return cur;
     }
     public void deleteNode(LinkNode head) {
         if (head == null)
@@ -610,7 +585,6 @@ public class LinkedListProb {
         LinkNode curr = head;
         curr.next = null;
     }
-
     LinkNode delNode(LinkNode head) {
         if (head == null)
             return null;
